@@ -1,0 +1,47 @@
+services:
+  - type: web
+    name: healthcare-management-system
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./
+    
+    # Scaling and resource limits
+    plan: free
+    
+    # Health check for startup verification
+    healthCheckPath: /
+    healthCheckInterval: 30
+    
+    # Environment variables from Render dashboard
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: JAVA_OPTS
+        value: -Xmx512m
+      - key: THYMELEAF_CACHE
+        value: "true"
+    
+    # Database environment variables (must be configured via Render dashboard)
+    # These should be set as private environment variables in Render:
+    # - DB_URL: MySQL connection string from Render MySQL service
+    # - DB_USERNAME: Database user
+    # - DB_PASSWORD: Database password
+    # - DB_DRIVER: com.mysql.cj.jdbc.Driver
+    # - HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+    
+    # Startup and shutdown commands
+    startCommand: java -Dserver.port=${PORT:-10000} -jar app.jar
+    
+    # Restart policy
+    restartPolicyType: on_failure
+    restartPolicyMaxRetries: 3
+
+databases:
+  - name: healthcare-db
+    databaseName: healthcare_db
+    user: root
+    plan: free
+    # Post-deploy SQL initialization
+    postDeployCommand: |
+      mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD healthcare_db < db/schema.sql
+      mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD healthcare_db < db/seed_data.sql

@@ -1,0 +1,51 @@
+# Git and version control
+.git
+.gitignore
+.gitattributes
+
+# Build artifacts and Maven
+target/
+.mvn/wrapper/maven-wrapper.jar
+*.log
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# Node.js (if used)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+tmp/
+temp/
+
+# Documentation and notes (don't need in image)
+*.md
+README.md
+LICENSE
+DEPLOYMENT.md
+UI-REDESIGN-NOTES.md
+
+# Agent and local Kiro files
+.agents/
+.kiro/
